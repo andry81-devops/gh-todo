@@ -40,3 +40,27 @@
   /<repo>--gh-content-cache and gh-content-cache can be rewrited and purged to
   drop the history out and should store only content cache not other files like
   configs or metadata.
+
+* Implement a repository subscribers accumulator.
+
+    for:
+
+      /github-accum-stats
+      /gh-action--accum-repo-subscribers
+      /gh-workflow
+
+* Implement a repository stargazers accumulator.
+
+    for:
+
+      /github-accum-stats
+      /gh-action--accum-repo-stargazers
+      /gh-workflow
+
+* Implement an account followers accumulator.
+
+    for:
+
+      /github-accum-stats
+      /gh-action--accum-account-followers
+      /gh-workflow
