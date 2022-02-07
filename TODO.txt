@@ -41,6 +41,14 @@
   drop the history out and should store only content cache not other files like
   configs or metadata.
 
+* Implement a repository release downloads accumulator.
+
+    for:
+
+      /github-accum-stats
+      /gh-action--accum-repo-release-downloads
+      /gh-workflow
+
 * Implement a repository subscribers accumulator.
 
     for:
