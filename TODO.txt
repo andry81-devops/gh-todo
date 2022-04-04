@@ -72,3 +72,10 @@
       /github-accum-stats
       /gh-action--accum-account-followers
       /gh-workflow
+
+* Implement a new tag watcher GitHub action experimental script to watch an
+  arbitrary git repository for a tag creation by a name pattern and does
+  reflect it as a release tag creation in another git repository to be able to
+  notify the owner about each tag creation.
+  Can be used for repositories where the owner does not make release but
+  instead does make tags.
