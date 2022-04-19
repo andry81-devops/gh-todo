@@ -79,3 +79,11 @@
   notify the owner about each tag creation.
   Can be used for repositories where the owner does not make release but
   instead does make tags.
+
+* Implement a repository events accumulator.
+
+    for:
+
+      /github-accum-stats
+      /gh-action--accum-repo-events
+      /gh-workflow
