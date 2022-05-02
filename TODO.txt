@@ -16,31 +16,6 @@
     /gh-action--*
     /gh-workflow
 
-* Workflow scripts to get, store and update various content like
-  badges, stickers, json files and so on through a git repository.
-  Reason: To make them always online (for example, in README.md files from
-  other git repositories) as long as a content cache repo is online.
-
-  for:
-
-    /gh-action--content-cache
-      - to store action scripts
-    /gh-workflow
-      - to store shell scripts
-
-    /<repo>--gh-content-cache
-      - Repo to store content files for <repo>
-    /gh-content-cache
-      - repo to store content files for all repos
-
-    /<repo>--gh-content-cache-config
-    /gh-content-cache-config
-      - configs for related content cache repos
-
-  /<repo>--gh-content-cache and gh-content-cache can be rewrited and purged to
-  drop the history out and should store only content cache not other files like
-  configs or metadata.
-
 * Implement a repository release downloads accumulator.
 
     for:
