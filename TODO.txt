@@ -62,3 +62,14 @@
       /github-accum-stats
       /gh-action--accum-repo-events
       /gh-workflow
+
+* Implement per date commit message to indicate particular statistic for a date
+  in a file or directory. For example, the `by_year` directory does contain
+  files in format `YYYY-MM-DD.json`. Each that file can be committed separately
+  with different commit message to indicate different accumulation statistic
+  segmented by date.
+
+    for:
+
+      /gh-workflow
+
