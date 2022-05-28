@@ -73,3 +73,10 @@
 
       /gh-workflow
 
+* Implement a repository commits accumulator.
+
+    for:
+
+      /github-accum-stats
+      /gh-action--accum-repo-commits
+      /gh-workflow
