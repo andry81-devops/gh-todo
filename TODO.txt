@@ -80,3 +80,10 @@
       /github-accum-stats
       /gh-action--accum-repo-commits
       /gh-workflow
+
+* Implement github links patch by pattern before the
+  `$GH_WORKFLOW_ROOT/bash/github/flush-print-annotations.sh`
+  script if a commit at the end is executed and succeeded to replace
+  all generic links like
+  `https://github.com/{{OWNER}}/{{REPO}}/tree/master/...` by
+  `https://github.com/{{OWNER}}/{{REPO}}/tree/{{COMMIT_HASH}}/...`.
