@@ -87,3 +87,15 @@
   all generic links like
   `https://github.com/{{OWNER}}/{{REPO}}/tree/master/...` by
   `https://github.com/{{OWNER}}/{{REPO}}/tree/{{COMMIT_HASH}}/...`.
+
+* Implement a repository links accumulator and checker.
+  Schedule iteration over repos and files, extract web links by patterns,
+  accumulate repo/file/link paths, check links and accumulate responce.
+
+    for:
+
+      /accum-url-links
+      /check-url-links
+      /gh-action--accum-url-links
+      /gh-action--check-url-links
+      /gh-workflow
