@@ -99,3 +99,33 @@
       /gh-action--accum-url-links
       /gh-action--check-url-links
       /gh-workflow
+
+* Implement a repository cache with bootstrapper executables periodically
+  taken out by the `gh-action--accum-content` action script.
+
+    for:
+
+      andry81-devops/bootstrappers
+      andry81-cache/bootstrappers--gh-content-cache
+      /gh-workflow
+
+    bootstrapper executables to take from:
+
+      * https://learn.microsoft.com/en-us/previous-versions/visualstudio/visual-studio-2017/install/create-an-offline-installation-of-visual-studio?view=vs-2017
+        https://aka.ms/vs/15/release/vs_professional.exe
+        https://aka.ms/vs/15/release/vs_enterprise.exe
+        https://aka.ms/vs/15/release/vs_buildtools.exe
+
+      * https://learn.microsoft.com/en-us/visualstudio/install/create-an-offline-installation-of-visual-studio?view=vs-2019
+        https://aka.ms/vs/16/release/vs_professional.exe
+        https://aka.ms/vs/16/release/vs_enterprise.exe
+        https://aka.ms/vs/16/release/vs_buildtools.exe
+
+      * https://learn.microsoft.com/en-us/visualstudio/install/create-an-offline-installation-of-visual-studio?view=vs-2022
+        https://aka.ms/vs/17/release/vs_community.exe
+        https://aka.ms/vs/17/release/vs_professional.exe
+        https://aka.ms/vs/17/release/vs_enterprise.exe
+        https://aka.ms/vs/17/release/vs_buildtools.exe
+
+      * https://www.cygwin.com/
+        https://www.cygwin.com/setup-x86_64.exe
