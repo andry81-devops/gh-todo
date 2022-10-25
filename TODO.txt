@@ -129,3 +129,19 @@
 
       * https://www.cygwin.com/
         https://www.cygwin.com/setup-x86_64.exe
+
+* Implement first commit or initial files content template in the
+  `gh-action--accum-gh-stats` action script to automatically insert,
+  for example, basic `README.md` file into a statistic output repository.
+
+    for:
+
+      /github-accum-stats
+      /gh-action--accum-gh-stats
+      /gh-workflow
+
+    example of a `README.md` template:
+
+      <p align="center">
+        <a href="#"><img src="https://img.shields.io/github/repo-size/{{OUTPUT_REPO_OWNER}}/{{OUTPUT_REPO}}--gh-stats?logo=github" valign="middle" alt="GitHub repo size in bytes" /></a>
+      • <a href="https://github.com/XAMPPRocky/tokei"><img src="https://tokei.rs/b1/github/{{OUTPUT_REPO_OWNER}}/{{OUTPUT_REPO}}--gh-stats?category=lines" valign="middle" alt="lines of text by tokei.rs" /></a>
