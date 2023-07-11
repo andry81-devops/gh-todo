@@ -145,3 +145,5 @@
       <p align="center">
         <a href="#"><img src="https://img.shields.io/github/repo-size/{{OUTPUT_REPO_OWNER}}/{{OUTPUT_REPO}}--gh-stats?logo=github" valign="middle" alt="GitHub repo size in bytes" /></a>
       • <a href="https://github.com/XAMPPRocky/tokei"><img src="https://tokei.rs/b1/github/{{OUTPUT_REPO_OWNER}}/{{OUTPUT_REPO}}--gh-stats?category=lines" valign="middle" alt="lines of text by tokei.rs" /></a>
+
+* Make a merged variant of `gh-action--accum-gh-stats` action script to run altogether the views and the clones counter accumulation
