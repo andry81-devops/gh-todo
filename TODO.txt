@@ -24,6 +24,9 @@
       /gh-action--accum-repo-release-downloads
       /gh-workflow
 
+  Count all downloads in the `Github dl|all` badge on the github repo main page
+  including deleted.
+
 * Implement a repository subscribers accumulator.
 
     for:
