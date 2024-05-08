@@ -150,3 +150,7 @@
       • <a href="https://github.com/XAMPPRocky/tokei"><img src="https://tokei.rs/b1/github/{{OUTPUT_REPO_OWNER}}/{{OUTPUT_REPO}}--gh-stats?category=lines" valign="middle" alt="lines of text by tokei.rs" /></a>
 
 * Make a merged variant of `gh-action--accum-gh-stats` action script to run altogether the views and the clones counter accumulation
+
+* replace content of `_externals` directory by externals taken out by the `vcstool` (https://github.com/dirk-thomas/vcstool) in these projects:
+
+  - gh-workflow
