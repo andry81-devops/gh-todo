@@ -217,3 +217,175 @@
     `YYYY.MM.DD:` line from the changelog file
 
     `COMMITHASH` - respective commit hash
+
+  But, because reading and merging all the changelog files might be a very long
+  operation, then there is must be an optimization to that.
+
+  One of the way is use the git blame with the selector to reduce the call
+  time down to a limited set of commits or file lines. The downside of it are
+  missed changelog file changes above the limit (due to that the changelog file
+  can be changed anythere inside). So, we can split all requests into set of
+  variants:
+
+  1. Requests with a high limit to call very frequently, for example, - each
+     day.
+
+  2. Requests with a moderate limit to call not very frequently, - each week
+     end.
+
+  3. Requests without the limit to call rarely, - each month. This the last one
+     will synchronize all the missed changes due to requests with the limit.
+
+  This will cover all the cases with out consumption much time from a pipeline.
+
+  But now we have to add the date and time value of the first or last commit
+  from the limit to indicate the time when the resulting changelog file part
+  has been actual to. Then find this time in the previously merged resulting
+  changelog file if the file exists. And update the resulting changlelog file
+  instead of a complete rewrite starting from that time.
+
+  For example, if read only first 5 commits from each changelog file, then:
+
+    %% YYYY-MM-DD HH:MM:SS (last merge time)
+
+    YYYY-MM-DD HH:MM:SS @ account1/repo1/<path-to-changelog-file> # COMMITHASH
+    YYYY.MM.DD:
+    ...
+
+    YYYY-MM-DD HH:MM:SS @ account1/repo1/<path-to-changelog-file> # COMMITHASH
+    YYYY.MM.DD:
+    ...
+
+    -------------------------------------------------------------------------------
+
+    YYYY-MM-DD HH:MM:SS @ account1/repo2/<path-to-changelog-file> # COMMITHASH
+    YYYY.MM.DD:
+    ...
+
+    -------------------------------------------------------------------------------
+
+    YYYY-MM-DD HH:MM:SS @ account2/repo1/<path-to-changelog-file> # COMMITHASH
+    YYYY.MM.DD:
+    ...
+
+    -------------------------------------------------------------------------------
+
+    YYYY-MM-DD HH:MM:SS @ account1/repo1/<path-to-changelog-file> # COMMITHASH
+    YYYY.MM.DD:
+    ...
+
+    YYYY-MM-DD HH:MM:SS @ account1/repo1/<path-to-changelog-file> # COMMITHASH
+    YYYY.MM.DD:
+    ...
+
+    YYYY-MM-DD HH:MM:SS @ account1/repo1/<path-to-changelog-file> # COMMITHASH
+    YYYY.MM.DD:
+    ...
+
+    %% YYYY-MM-DD HH:MM:SS (last merge time)
+
+    YYYY-MM-DD HH:MM:SS @ account1/repo1/<path-to-changelog-file> # COMMITHASH
+    YYYY.MM.DD:
+    ...
+
+    ...
+
+    -------------------------------------------------------------------------------
+
+    YYYY-MM-DD HH:MM:SS @ account1/repo2/<path-to-changelog-file> # COMMITHASH
+    YYYY.MM.DD:
+    ...
+
+
+    YYYY-MM-DD HH:MM:SS @ account1/repo2/<path-to-changelog-file> # COMMITHASH
+    YYYY.MM.DD:
+    ...
+
+
+    YYYY-MM-DD HH:MM:SS @ account1/repo2/<path-to-changelog-file> # COMMITHASH
+    YYYY.MM.DD:
+    ...
+
+
+    YYYY-MM-DD HH:MM:SS @ account1/repo2/<path-to-changelog-file> # COMMITHASH
+    YYYY.MM.DD:
+    ...
+
+    %% YYYY-MM-DD HH:MM:SS (last merge time)
+
+    YYYY-MM-DD HH:MM:SS @ account1/repo2/<path-to-changelog-file> # COMMITHASH
+    YYYY.MM.DD:
+    ...
+
+    ...
+
+    -------------------------------------------------------------------------------
+
+    YYYY-MM-DD HH:MM:SS @ account2/repo1/<path-to-changelog-file> # COMMITHASH
+    YYYY.MM.DD:
+    ...
+
+    YYYY-MM-DD HH:MM:SS @ account2/repo1/<path-to-changelog-file> # COMMITHASH
+    YYYY.MM.DD:
+    ...
+
+    YYYY-MM-DD HH:MM:SS @ account2/repo1/<path-to-changelog-file> # COMMITHASH
+    YYYY.MM.DD:
+    ...
+
+    YYYY-MM-DD HH:MM:SS @ account2/repo1/<path-to-changelog-file> # COMMITHASH
+    YYYY.MM.DD:
+    ...
+
+    %% YYYY-MM-DD HH:MM:SS (last merge time)
+
+    ...
+
+  Note that the first one line `%% YYYY-MM-DD HH:MM:SS (last merge time)` can
+  be omitted and all the rest lines stays as is because will be rewrited by the
+  last variant of the request without the limit.
+
+  But now we can read the previously merged resulting file before the rest and
+  retrieve the last merge time for each repository changelog file (a new
+  repository changelog files wouldn't have any and so will be requested
+  completely).
+
+  So we can optimize further down to only 2 variants:
+
+  1. Requests with a limit has been read from the previously merged resulting
+     file to call on a regular basis, for example, - each day.
+
+  2. Requests without the limit all the changelog files to remerge all but call
+     rarely, - each month.
+
+  And this arises these issues:
+
+    1. If a repository changelog file is new and so not yet been merged in the
+       previously merged resulting file.
+
+    2. If a repository changelog file is changed before the last merge time
+       been recorded in the previously merged resulting file for the repository
+       URL.
+
+  The issue (2) fixes by the (2) request variant.
+
+  The issue (1) can be fixed by splitting the logic into 2 steps:
+
+  1. Collect all new changelog files, git blame them without a limit and merge
+     the result with the previously merged resulting file if exists.
+
+     This step will have a minor issue when new
+     `%% YYYY-MM-DD HH:MM:SS (last merge time)` records will be unordered with
+     the already existed in the previously merged resulting file if exists.
+
+  2. Collect not new changelog files, git blame them with a limit taken from
+     previously merged resulting file and merge the result with the last merged
+     resulting file.
+
+     This step will have a major issue when the changes before the last merge
+     time would NOT be merged into the last merged resulting file. It still can
+     be fixed by the (2) request variant.
+
+     Note that the issue can be reduced by increasing the time limit used in
+     the git blame. But in that case it brings conflicted records which would
+     exist on both sides of a merge.
