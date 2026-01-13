@@ -1,5 +1,6 @@
 * Implement push-pull retry loop to make a git repo push from different
-  workflow pipelines.
+  workflow pipelines (otherwise a git push fails and a workflow contained it
+  does fail too until the next run).
 
   for:
 
@@ -7,8 +8,8 @@
     /gh-workflow
 
 * Implement a github repo statistic push from different repos into a single git
-  repo to avoid github repositories page overrun by the automated user commits
-  (page updates each time a commit is made).
+  repo to avoid a github account repositories page overrun by the automated
+  user commits (page updates each time a commit has made).
 
   for:
 
@@ -91,9 +92,13 @@
   `https://github.com/{{OWNER}}/{{REPO}}/tree/master/...` by
   `https://github.com/{{OWNER}}/{{REPO}}/tree/{{COMMIT_HASH}}/...`.
 
+  It will point the commit from the workflow log directly instead imprecisely
+  by a date (except the changelog file which is part of a commit and so still
+  has the link to the commit by a date).
+
 * Implement a repository links accumulator and checker.
   Schedule iteration over repos and files, extract web links by patterns,
-  accumulate repo/file/link paths, check links and accumulate responce.
+  accumulate repo/file/link paths, check links and accumulate response.
 
     for:
 
@@ -154,3 +159,61 @@
 * replace content of `_externals` directory by externals taken out by the `vcstool` (https://github.com/dirk-thomas/vcstool) in these projects:
 
   - gh-workflow
+
+  Not, it must be taken in a workflow pipeline script using vcstool or it's
+  variant.
+
+* Implement a common changelog file accumulation script.
+
+    for:
+
+      /gh-action--accum-repos-changelog
+      /gh-workflow
+
+  All changelog files must has a predefined format as explained here:
+  `Changelog files organization` : https://gist.github.com/andry81/d278e6d129ca1af326eafb67470a2ae3
+
+  Script uses list of accounts to retrieve list of repositories from each
+  account. And then filters list of repositories using include/exclude pattern.
+
+  Then filters each repository by an include path (if has) to a changelog file.
+  (default path is a repository root).
+
+  Then use git blame on each changelog file to index each changelog date line
+  for an exact commit time to sort changelog blocks between each other.
+
+  Different changelog file parts from different repositories can be separated
+  by the line:
+
+  `-------------------------------------------------------------------------------`
+
+  The resulting changelog file can look like this:
+
+    YYYY-MM-DD HH:MM:SS @ account1/repo1/<path-to-changelog-file> # COMMITHASH
+    YYYY.MM.DD:
+    ...
+
+    YYYY-MM-DD HH:MM:SS @ account1/repo1/<path-to-changelog-file> # COMMITHASH
+    YYYY.MM.DD:
+    ...
+
+    -------------------------------------------------------------------------------
+
+    YYYY-MM-DD HH:MM:SS @ account1/repo2/<path-to-changelog-file> # COMMITHASH
+    YYYY.MM.DD:
+    ...
+
+    -------------------------------------------------------------------------------
+
+    YYYY-MM-DD HH:MM:SS @ account2/repo1/<path-to-changelog-file> # COMMITHASH
+    YYYY.MM.DD:
+    ...
+
+  Where:
+
+    `YYYY.MM.DD:` - a line from a changelog file
+
+    `YYYY-MM-DD HH:MM:SS` date and time of a commit contained respective
+    `YYYY.MM.DD:` line from the changelog file
+
+    `COMMITHASH` - respective commit hash
