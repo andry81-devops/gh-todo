@@ -389,3 +389,19 @@
      Note that the issue can be reduced by increasing the time limit used in
      the git blame. But in that case it brings conflicted records which would
      exist on both sides of a merge.
+
+* Implement a userlog/seclog file generation script from the changelog file
+  in the same directory.
+
+    for:
+
+      /gh-action--gen-repos-changelogs
+      /gh-workflow
+
+* Implement a changelog/userlog/seclog file synchronization script for all
+  sub directories from the same file in the root directory.
+
+    for:
+
+      /gh-action--sync-repos-changelogs
+      /gh-workflow
