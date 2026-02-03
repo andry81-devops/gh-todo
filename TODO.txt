@@ -156,12 +156,13 @@
 
 * Make a merged variant of `gh-action--accum-gh-stats` action script to run altogether the views and the clones counter accumulation
 
-* replace content of `_externals` directory by externals taken out by the `vcstool` (https://github.com/dirk-thomas/vcstool) in these projects:
+* replace content of `_externals` directory by externals taken out by the
+  `vcstool` (https://github.com/dirk-thomas/vcstool) or `gitman`
+  (https://github.com/jacebrowning/gitman) in these projects:
 
   - gh-workflow
 
-  Not, it must be taken in a workflow pipeline script using vcstool or it's
-  variant.
+  Additionally it must be used in a workflow pipeline.
 
 * Implement a common changelog file accumulation script.
 
@@ -342,8 +343,8 @@
     ...
 
   Note that the first one line `%% YYYY-MM-DD HH:MM:SS (last merge time)` can
-  be omitted and all the rest lines stays as is because will be rewrited by the
-  last variant of the request without the limit.
+  be omitted and all the rest lines stays as is because will be rewritten by
+  the last variant of the request (3) without the limit.
 
   But now we can read the previously merged resulting file before the rest and
   retrieve the last merge time for each repository changelog file (a new
@@ -360,16 +361,20 @@
 
   And this arises these issues:
 
-    1. If a repository changelog file is new and so not yet been merged in the
-       previously merged resulting file.
+  1. If a repository changelog file is new and so not yet been merged in the
+     previously merged resulting file.
 
-    2. If a repository changelog file is changed before the last merge time
-       been recorded in the previously merged resulting file for the repository
-       URL.
+  2. If a repository changelog file is changed before the last merge time been
+     recorded in the previously merged resulting file for the repository URL.
+     This does not involve changes in already recorded commit hashes.
 
-  The issue (2) fixes by the (2) request variant.
+  3. If a repository changelog file were amended or rewritten changing already
+     recorded commit hashes.
 
-  The issue (1) can be fixed by splitting the logic into 2 steps:
+  All issues here can be fixed by the (2) request variant.
+
+  The issue (1) can be optimized to be partially fixed earlier by splitting the
+  logic into 2 steps:
 
   1. Collect all new changelog files, git blame them without a limit and merge
      the result with the previously merged resulting file if exists.
@@ -405,3 +410,5 @@
 
       /gh-action--sync-repos-changelogs
       /gh-workflow
+
+* Print into changelog file a change of the stats in last 14 days.
